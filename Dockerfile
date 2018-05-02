@@ -1,5 +1,3 @@
-ARG SPARK_VERSION=2.1.0
-ARG HADOOP_VERSION=2.7
 FROM openjdk:8-alpine
 
 # ================================================================================================
@@ -23,8 +21,8 @@ FROM openjdk:8-alpine
 
 MAINTAINER "Laradock Team <mahmoud@zalt.me>"
 
-ENV SPARK_VERSION=${SPARK_VERSION} \
-    HADOOP_VERSION=${HADOOP_VERSION} \
+ENV SPARK_VERSION=2.1.0 \
+    HADOOP_VERSION=2.7 \
     SPARK_HOME="/usr/local/share/spark"
 
 ENV SPARK_NO_DAEMONIZE=true
