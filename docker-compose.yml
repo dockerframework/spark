@@ -48,6 +48,8 @@ services:
       - CONSUL_SERVICETAGS=dev
       - CONSUL_SERVICEPORT=8123
       - CONSUL_CHECKTYPE=tcp
+      - SPARK_MASTER_HOST=spark-master
+    command: start-master.sh
 
   spark-worker:
     restart: always
@@ -75,4 +77,7 @@ services:
       - CONSUL_SERVICETAGS=dev
       - CONSUL_SERVICEPORT=8124
       - CONSUL_CHECKTYPE=tcp
+      - SPARK_EXECUTOR_MEMORY=4G
+      - SPARK_DRIVER_MEMORY=2G
       - SPARK_MASTERURL=spark://spark-master:7077
+    command: start-slave.sh --host spark-worker spark://spark-master:7077
