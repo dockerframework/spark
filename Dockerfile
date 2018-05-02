@@ -29,7 +29,7 @@ ENV SPARK_NO_DAEMONIZE=true
 
 RUN set -xe \
   && cd tmp \
-  && wget http://mirrors.gigenet.com/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
+  && curl -sSL http://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
   && tar -zxvf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
   && rm *.tgz \
   && mkdir -p `dirname ${SPARK_HOME}` \
