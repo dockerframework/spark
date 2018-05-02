@@ -18,8 +18,8 @@ DAEMON_MODE="1"                      # (0 = disable daemon mode, 1 = running dae
 USERNAME=`echo $USER`
 PATH_HOME=`echo $HOME`
 
-CONTAINER_PRODUCTION="spark"
-CONTAINER_DEVELOPMENT="spark"
+CONTAINER_PRODUCTION="spark-master spark-worker"
+CONTAINER_DEVELOPMENT="spark-master spark-worker"
 
 export DOCKER_CLIENT_TIMEOUT=300
 export COMPOSE_HTTP_TIMEOUT=300
@@ -104,24 +104,24 @@ docker_build() {
 
     ## MULTI CONTAINER
     ## ------------------------------
-    ## for CONTAINER in $BUILD_ENV
-    ## do
-    ##   get_time
-    ##   echo "--------------------------------------------------------------------------"
-    ##   echo "\033[22;32m[ $DATE ]       docker-compose build $CONTAINER \033[0m        "
-    ##   echo "--------------------------------------------------------------------------"
-    ##   docker-compose build $CONTAINER
-    ##   echo ""
-    ## done
+    for CONTAINER in $BUILD_ENV
+    do
+      get_time
+      echo "--------------------------------------------------------------------------"
+      echo "\033[22;32m[ $DATE ]       docker-compose build $CONTAINER \033[0m        "
+      echo "--------------------------------------------------------------------------"
+      docker-compose build $CONTAINER
+      echo ""
+    done
 
     ## SINGLE CONTAINER (test)
     ## ------------------------------
-    get_time
-    echo "--------------------------------------------------------------------------"
-    echo "\033[22;32m[ $DATE ]       docker-compose build $BUILD_ENV \033[0m        "
-    echo "--------------------------------------------------------------------------"
-    docker-compose build $BUILD_ENV
-    echo ""
+    ## get_time
+    ## echo "--------------------------------------------------------------------------"
+    ## echo "\033[22;32m[ $DATE ]       docker-compose build $BUILD_ENV \033[0m        "
+    ## echo "--------------------------------------------------------------------------"
+    ## docker-compose build $BUILD_ENV
+    ## echo ""
   fi
 }
 
