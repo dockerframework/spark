@@ -1,6 +1,6 @@
 ARG SPARK_VERSION=2.1.0
 ARG HADOOP_VERSION=2.7
-FROM dockerframework/core-base:latest
+FROM dockerframework/core-base-consul:latest
 
 # ================================================================================================
 #  Inspiration: Docker Alpine (https://github.com/bhuisgen/docker-alpine)
@@ -32,9 +32,7 @@ RUN mkdir -p ${SPARK_HOME} && \
     adduser -S -D -g "" -G spark -s /bin/sh -h ${SPARK_HOME} spark && \
     chown -R spark:spark ${SPARK_HOME}
 
-RUN apk update && \
-    apk upgrade && \
-    apk add bash bind-tools ca-certificates curl jq openjdk8-jre tar && \
+RUN apk add openjdk8-jre && \
     curl -sSL http://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz | tar -xzo -C ${SPARK_HOME} --strip-components 1 && \
     apk del tar && \
     rm -rf /var/cache/apk/*
