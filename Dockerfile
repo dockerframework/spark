@@ -1,8 +1,8 @@
 FROM openjdk:8-alpine
 
 # ================================================================================================
-#  Inspiration: Docker Alpine (https://github.com/bhuisgen/docker-alpine)
-#               Boris HUISGEN <bhuisgen@hbis.fr>
+#  Inspiration: Docker Spark (https://github.com/twang2218/docker-spark)
+#               Tao Wang <twang2218@gmail.com>
 # ================================================================================================
 #  Core Contributors:
 #   - Mahmoud Zalt @mahmoudz
