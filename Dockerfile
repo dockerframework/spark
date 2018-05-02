@@ -1,6 +1,6 @@
 ARG SPARK_VERSION=2.1.0
 ARG HADOOP_VERSION=2.7
-FROM dockerframework/core-base-consul:latest
+FROM openjdk:8-alpine
 
 # ================================================================================================
 #  Inspiration: Docker Alpine (https://github.com/bhuisgen/docker-alpine)
@@ -25,19 +25,26 @@ MAINTAINER "Laradock Team <mahmoud@zalt.me>"
 
 ENV SPARK_VERSION=${SPARK_VERSION} \
     HADOOP_VERSION=${HADOOP_VERSION} \
-    SPARK_HOME=/usr/local/spark
+    SPARK_HOME /usr/local/share/spark
 
-RUN mkdir -p ${SPARK_HOME} && \
-    addgroup -S spark && \
-    adduser -S -D -g "" -G spark -s /bin/sh -h ${SPARK_HOME} spark && \
-    chown -R spark:spark ${SPARK_HOME}
+ENV SPARK_NO_DAEMONIZE=true
 
-RUN apk add openjdk8-jre && \
-    curl -sSL http://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz | tar -xzo -C ${SPARK_HOME} --strip-components 1 && \
-    apk del tar && \
-    rm -rf /var/cache/apk/*
+RUN set -xe \
+  && cd tmp \
+  && wget http://mirrors.gigenet.com/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
+  && tar -zxvf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
+  && rm *.tgz \
+  && mkdir -p `dirname ${SPARK_HOME}` \
+  && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} ${SPARK_HOME}
 
-COPY rootfs /
 
-ENTRYPOINT ["/init"]
-CMD []
+ENV PATH=$PATH:${SPARK_HOME}/sbin:${SPARK_HOME}/bin
+
+WORKDIR ${SPARK_HOME}
+
+# SPARK_MASTER_PORT
+EXPOSE 7077
+# SPARK_MASTER_WEBUI_PORT
+EXPOSE 8080
+
+CMD ["spark-shell"]
