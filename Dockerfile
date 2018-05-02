@@ -25,7 +25,7 @@ MAINTAINER "Laradock Team <mahmoud@zalt.me>"
 
 ENV SPARK_VERSION=${SPARK_VERSION} \
     HADOOP_VERSION=${HADOOP_VERSION} \
-    SPARK_HOME /usr/local/share/spark
+    SPARK_HOME="/usr/local/share/spark"
 
 ENV SPARK_NO_DAEMONIZE=true
 
