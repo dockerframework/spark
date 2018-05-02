@@ -27,13 +27,17 @@ ENV SPARK_VERSION=2.1.0 \
 
 ENV SPARK_NO_DAEMONIZE=true
 
+RUN apk update && \
+    apk upgrade && \
+    apk add bash bind-tools ca-certificates curl jq tar wget
+
 RUN set -xe \
-  && cd tmp \
-  && curl -sSL http://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
-  && tar -zxvf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
-  && rm *.tgz \
-  && mkdir -p `dirname ${SPARK_HOME}` \
-  && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} ${SPARK_HOME}
+    && cd tmp \
+    && curl -sSL http://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
+    && tar -zxvf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
+    && rm *.tgz \
+    && mkdir -p `dirname ${SPARK_HOME}` \
+    && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} ${SPARK_HOME}
 
 
 ENV PATH=$PATH:${SPARK_HOME}/sbin:${SPARK_HOME}/bin
