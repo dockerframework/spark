@@ -1,8 +1,8 @@
 FROM openjdk:8-alpine
 
 # ================================================================================================
-#  Inspiration: Docker Alpine (https://github.com/bhuisgen/docker-alpine)
-#               Boris HUISGEN <bhuisgen@hbis.fr>
+#  Inspiration: Docker Spark (https://github.com/twang2218/docker-spark)
+#               Tao Wang <twang2218@gmail.com>
 # ================================================================================================
 #  Core Contributors:
 #   - Mahmoud Zalt @mahmoudz
@@ -27,13 +27,15 @@ ENV SPARK_VERSION=2.1.0 \
 
 ENV SPARK_NO_DAEMONIZE=true
 
-RUN set -xe \
-  && cd tmp \
-  && wget http://mirrors.gigenet.com/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
-  && tar -zxvf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
-  && rm *.tgz \
-  && mkdir -p `dirname ${SPARK_HOME}` \
-  && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} ${SPARK_HOME}
+RUN apk update && \
+    apk upgrade && \
+    apk add bash bind-tools ca-certificates curl jq tar wget
+
+RUN set -xe && \
+    mkdir -p ${SPARK_HOME} && \
+    curl -sSL http://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz | tar -xzo -C ${SPARK_HOME} --strip-components 1 && \
+    apk del tar && \
+    rm -rf /var/cache/apk/*
 
 
 ENV PATH=$PATH:${SPARK_HOME}/sbin:${SPARK_HOME}/bin
