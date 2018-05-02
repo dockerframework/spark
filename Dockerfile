@@ -1,6 +1,6 @@
 ARG SPARK_VERSION=2.1.0
 ARG HADOOP_VERSION=2.7
-FROM bhuisgen/alpine-base-consul:latest
+FROM dockerframework/core-base-consul:latest
 
 # ================================================================================================
 #  Inspiration: Docker Alpine (https://github.com/bhuisgen/docker-alpine)
