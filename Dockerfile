@@ -31,13 +31,10 @@ RUN apk update && \
     apk upgrade && \
     apk add bash bind-tools ca-certificates curl jq tar wget
 
-RUN set -xe \
-    && cd tmp \
-    && curl -sSL http://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
-    && tar -zxvf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
-    && rm *.tgz \
-    && mkdir -p `dirname ${SPARK_HOME}` \
-    && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} ${SPARK_HOME}
+RUN set -xe && \
+    curl -sSL http://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz | tar -xzo -C ${SPARK_HOME} --strip-components 1 && \
+    apk del tar && \
+    rm -rf /var/cache/apk/*
 
 
 ENV PATH=$PATH:${SPARK_HOME}/sbin:${SPARK_HOME}/bin
