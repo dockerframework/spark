@@ -32,6 +32,7 @@ RUN apk update && \
     apk add bash bind-tools ca-certificates curl jq tar wget
 
 RUN set -xe && \
+    mkdir -p ${SPARK_HOME} && \
     curl -sSL http://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz | tar -xzo -C ${SPARK_HOME} --strip-components 1 && \
     apk del tar && \
     rm -rf /var/cache/apk/*
